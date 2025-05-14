@@ -22,8 +22,8 @@ public int CorrectAnswer { get; private set; }
 
 public void GenerateMathOperation(int number1, int number2)
 {
-    Number1 = number1;
-    Number2 = number2;
+    Number1 = numbergen1;
+    Number2 = numbergen2;
 
     // Randomly select a math operation
     int operationIndex = Random.Range(0, 4);
@@ -43,15 +43,7 @@ public void GenerateMathOperation(int number1, int number2)
             break;
         case 3:
             Operation = "/";
-            if (Number2 != 0)
-            {
-                CorrectAnswer = Number1 / Number2;
-            }
-            else
-            {
-                Operation = "+";
-                CorrectAnswer = Number1 + Number2;
-            }
+            CorrectAnswer = Number1 / Number2;
             break;
     }
 }
