@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class PreselectMathOperationGen : MonoBehaviour
 {
+    public void ExportNumbers(RandomNumberGenerator targetScript)
+    {
+        if (targetScript != null)
+        {
+            targetScript.GenerateRandomNumbers();
+            int numbergen1 = targetScript.Number1;
+            int numbergen2 = targetScript.Number2;
+
+            GenerateMathOperation(numbergen1, numbegen2);
+        }
+    }
 public int Number1 { get; private set; }
 public int Number2 { get; private set; }
 public string Operation { get; private set; }

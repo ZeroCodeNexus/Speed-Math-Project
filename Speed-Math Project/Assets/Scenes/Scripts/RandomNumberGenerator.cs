@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RandomNumberGenerator : MonoBehaviour
 {
-    public int Number1 { get; private set; }
-    public int Number2 { get; private set; }
+    public int numbergen1 { get; private set; }
+    public int numbergen2 { get; private set; }
 
     void Start()
     {
@@ -14,8 +14,8 @@ public class RandomNumberGenerator : MonoBehaviour
 
     public void GenerateRandomNumbers()
     {
-        Number1 = Random.Range(1, int.MaxValue);
-        Number2 = Random.Range(1, int.MaxValue);
+        numbergen1 = Random.Range(1, int.MaxValue);
+        numbergen2 = Random.Range(1, int.MaxValue);
         
     }
 
@@ -23,7 +23,7 @@ public class RandomNumberGenerator : MonoBehaviour
     {
         if (targetScript != null)
         {
-            targetScript.SetNumbers(Number1, Number2);
+            targetScript.SetNumbers(numbergen1, numbergen2);
         }
     }
 }
