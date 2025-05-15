@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class ScoringSystemScript : MonoBehaviour
 {
-   using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ScoringSystemScript : MonoBehaviour
-{
     public PreselectMathOperationGen GenerateMathOperation;
 
     private int score = 0;
@@ -76,9 +70,4 @@ public class ScoringSystemScript : MonoBehaviour
     {
         return correctStreak;
     }
-}
-
-   
-
-
 }
