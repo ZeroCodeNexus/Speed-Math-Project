@@ -12,7 +12,7 @@ public class PreselectMathOperationGen : MonoBehaviour
             int numbergen1 = targetScript.Number1;
             int numbergen2 = targetScript.Number2;
 
-            GenerateMathOperation(numbergen1, numbegen2);
+            GenerateMathOperation(numbergen1, numbergen2);
         }
     }
 public int Number1 { get; private set; }

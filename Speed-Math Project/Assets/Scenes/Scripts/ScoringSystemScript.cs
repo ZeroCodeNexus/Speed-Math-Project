@@ -21,9 +21,9 @@ public class ScoringSystemScript : MonoBehaviour
 
     public void CheckAnswer(string userInput)
     {
-        if (mathOperationGen == null)
+        if (GenerateMathOperation == null)
         {
-            Debug.LogWarning("mathOperationGen reference not set!");
+            Debug.LogWarning("GenerateMathOperation reference not set!");
             return;
         }
         if (string.IsNullOrEmpty(userInput))
@@ -32,7 +32,7 @@ public class ScoringSystemScript : MonoBehaviour
             return;
         }
 
-        string CorrectAnswer = mathOperationGen.CorrectAnswer.ToString();
+        string CorrectAnswer = GenerateMathOperation.CorrectAnswer.ToString();
 
         if (userInput.Trim() == CorrectAnswer)
         {
