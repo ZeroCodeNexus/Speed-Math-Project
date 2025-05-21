@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ScoringSystemScript : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class ScoringSystemScript : MonoBehaviour
 
 
     private readonly int[] streakThresholds = { 25, 15, 10, 5 };
-    private readonly int[] multipliers =    { 10,  5,  3, 2 };
+    private readonly int[] multipliers = { 10, 5, 3, 2 };
 
     public void InitializeRun()
     {
@@ -19,6 +21,26 @@ public class ScoringSystemScript : MonoBehaviour
         correctStreak = 0;
     }
 
+
+    private int GetCurrentMultiplier()
+    {
+        for (int i = 0; i < streakThresholds.Length; i++)
+        {
+            if (correctStreak >= streakThresholds[i])
+                return multipliers[i];
+        }
+        return 1;
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public int GetStreak()
+    {
+        return correctStreak;
+    }
     public void CheckAnswer(string userInput)
     {
         if (GenerateMathOperation == null)
@@ -49,25 +71,22 @@ public class ScoringSystemScript : MonoBehaviour
             if (score < 0) score = 0;
             Debug.Log($"Incorrect. -5 points. Score: {score}");
         }
-    }
 
-    private int GetCurrentMultiplier()
+    }
+    
+    public void SendScoreToUI(ScoringSystemScript ScoreManager)
     {
-        for (int i = 0; i < streakThresholds.Length; i++)
+        if (ScoreManager != null)
         {
-            if (correctStreak >= streakThresholds[i])
-                return multipliers[i];
+            ScoreManager.ScoringSystemScript();
+            int score = scoreText
+            CheckAnswer(score);
         }
-        return 1;
-    }
+        else
+        {
+            Debug.LogWarning("ScoreManager reference not set!");
+        }
 
-    public int GetScore()
-    {
-        return score;
-    }
-
-    public int GetStreak()
-    {
-        return correctStreak;
+        
     }
 }

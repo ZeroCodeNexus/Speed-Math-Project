@@ -19,11 +19,4 @@ public class RandomNumberGenerator : MonoBehaviour
         
     }
 
-    public void ExportNumbers(PreselectMathOperationGen targetScript)
-    {
-        if (targetScript != null)
-        {
-            targetScript.SetNumbers(numbergen1, numbergen2);
-        }
-    }
 }

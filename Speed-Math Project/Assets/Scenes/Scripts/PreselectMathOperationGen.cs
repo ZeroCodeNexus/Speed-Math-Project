@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PreselectMathOperationGen : MonoBehaviour
 {
-    public void ExportNumbers(RandomNumberGenerator targetScript)
+    public void ExportNumbers(RandomNumberGenerator rng)
     {
-        if (targetScript != null)
+        if (rng != null)
         {
-            targetScript.GenerateRandomNumbers();
-            int numbergen1 = targetScript.Number1;
-            int numbergen2 = targetScript.Number2;
+            rng.GenerateRandomNumbers();
+            int number1 = rng.Number1;
+            int number2 = rng.Number2;
 
-            GenerateMathOperation(numbergen1, numbergen2);
+            GenerateMathOperation(number1, number2);
         }
     }
 public int Number1 { get; private set; }
@@ -22,8 +22,8 @@ public int CorrectAnswer { get; private set; }
 
 public void GenerateMathOperation(int number1, int number2)
 {
-    Number1 = numbergen1;
-    Number2 = numbergen2;
+    Number1 = number1;
+    Number2 = number2;
 
     // Randomly select a math operation
     int operationIndex = Random.Range(0, 4);
@@ -47,5 +47,16 @@ public void GenerateMathOperation(int number1, int number2)
             break;
     }
 }
+
+public void DisplayCurrentOperation(OperationDisplayManager displayManager)
+{
+    if (displayManager != null)
+    {
+        string operationText = $"{Number1} {Operation} {Number2}";
+        displayManager.ShowOperation(operationText);
+    }
+}
+
+
 
 }
