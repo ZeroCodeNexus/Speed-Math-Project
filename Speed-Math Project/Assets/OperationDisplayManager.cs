@@ -6,25 +6,29 @@ using TMPro;
 
 public class OperationDisplayManager : MonoBehaviour
 {
-
-    public void DisplayOperation(string operation, int number1, int number2)
+    
+    public UnityEngine.UI.Text operationText; // Declare at the class level
+    // For TMPro.TMP_Text (recommended):
+    void Start()
     {
-        public UnityEngine.UI.Text operationText;
-
-    For TMPro.TMP_Text(recommended):
-         public TMPro.TMP_Text operationText;
-
-        if (operationText != null)
+        if (operationText == null)
         {
-            operationText.text = $"{number1} {operation} {number2}";
+            operationText = GetComponent<UnityEngine.UI.Text>();
         }
     }
-    public void ClearOperation()
+    public void ShowOperation(string Operation, int Number1 = 0, int Number2 = 0)
+    {
+        DisplayOperation(Operation, Number1, Number2);
+    }
+    public void DisplayOperation(string Operation, int Number1, int Number2)
     {
         if (operationText != null)
         {
-            operationText.text = "";
+            operationText.text = $"{Number1} {Operation} {Number2}";
+        }
+        else
+        {
+            Debug.LogWarning("Operation text component is not assigned.");
         }
     }
-   
 }

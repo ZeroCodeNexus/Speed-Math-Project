@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
-    public Text scoreText;
+    [SerializeField] private Text scoreText;
+    private int score = 0; // Declare and initialize the score variable
 
     void Start()
     {
@@ -15,11 +16,15 @@ public class ScoreManager : MonoBehaviour
     {
         if (CheckAnswers == null)
         {
-            Debug.LogWarning("CheckAnswers reference not set!");
+            Debug.LogWarning("CheckAnswers reference not set in UpdateScore method!");
             return;
         }
-        int currentScore = CheckAnswers.GetScore();
-        scoreText.text = "Points: " + currentScore.ToString();
+        int newScore = CheckAnswers.GetScore();
+        if (newScore != score) // Update only if the score has changed
+        {
+            score = newScore;
+            scoreText.text = "Points: " + score.ToString();
+        }
     }
 
     public int GetScore()

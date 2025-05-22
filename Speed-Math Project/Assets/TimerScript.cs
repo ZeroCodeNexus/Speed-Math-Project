@@ -1,43 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class TimerScript : MonoBehaviour
 {
-    public float timeLimit = 300; // Time limit in seconds (5 minutes)
+    float timeLimit = 300; // Time limit in seconds (5 minutes)
     private float timeRemaining;
     private bool isTimerRunning = false;
+    private float startTime;
 
     void StartTimer()
     {
-        timeRemaining = timeLimit;
+        TimeRemaining = timeLimit;
         isTimerRunning = true;
+        startTime = Time.time;
     }
-
+    public float TimeRemaining { get; private set; }
     void UpdateTimer()
     {
         if (isTimerRunning)
         {
-            timeRemaining -= Time.deltaTime;
+            TimeRemaining = timeLimit - (Time.time - startTime);
 
             if (timeRemaining <= 0)
             {
-                timeRemaining = 0;
+                TimeRemaining = 0;
                 isTimerRunning = false;
                 Debug.Log("Time's up!");
                 // Trigger end of game or any other action here
             }
         }
     }
-
-    public float GetTimeRemaining()
-    {
-        return timeRemaining;
-    }
-
-    public void ResetTimer()
-    {
-        timeRemaining = timeLimit;
-        isTimerRunning = true;
-    }
 }
+
