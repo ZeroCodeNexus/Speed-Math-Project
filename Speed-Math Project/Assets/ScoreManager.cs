@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private Text scoreText;
@@ -9,7 +12,7 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        scoreText.text = "Points: " + score.ToString();
+            scoreText.text = "Points: " + score.ToString();
     }
 
    public void UpdateScore(ScoringSystemScript CheckAnswers)
@@ -26,6 +29,7 @@ public class ScoreManager : MonoBehaviour
             scoreText.text = "Points: " + score.ToString();
         }
     }
+
 
     public int GetScore()
     {
