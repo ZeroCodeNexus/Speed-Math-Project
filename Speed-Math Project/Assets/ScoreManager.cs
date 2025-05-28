@@ -7,33 +7,11 @@ using UnityEngine.EventSystems;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] private Text scoreText;
-    private int score = 0; // Declare and initialize the score variable
+    [SerializeField] private Text scoreText; 
 
-    void Start()
+    public void UpdateScore(int score)
     {
-            scoreText.text = "Points: " + score.ToString();
+        if (scoreText != null)
+            scoreText.text = $"Score: {score}";
     }
-
-   public void UpdateScore(ScoringSystemScript CheckAnswers)
-    {
-        if (CheckAnswers == null)
-        {
-            Debug.LogWarning("CheckAnswers reference not set in UpdateScore method!");
-            return;
-        }
-        int newScore = CheckAnswers.GetScore();
-        if (newScore != score) // Update only if the score has changed
-        {
-            score = newScore;
-            scoreText.text = "Points: " + score.ToString();
-        }
-    }
-
-
-    public int GetScore()
-    {
-        return score;
-    }
- 
 }

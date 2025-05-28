@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class TimerScript : MonoBehaviour
 {
-    private ScoringSystemScript scoringSystemScript; // No SerializeField
-    [SerializeField] private GameObject timerObject; // Reference to the timer object
-    float timeLimit = 300; // Time limit in seconds (5 minutes)
+    private ScoringSystemScript scoringSystemScript;
+
+    [SerializeField] private GameObject timerObject;
+    [SerializeField] private Text timerText;
+
+    private float timeLimit = 300;
     private float timeRemaining;
     private bool isTimerRunning = false;
     private float startTime;
@@ -16,7 +19,6 @@ public class TimerScript : MonoBehaviour
 
     private void Awake()
     {
-        // Automatically find the ScoringSystemScript in the scene
         scoringSystemScript = FindObjectOfType<ScoringSystemScript>();
         if (scoringSystemScript == null)
         {
@@ -24,9 +26,10 @@ public class TimerScript : MonoBehaviour
         }
     }
 
-    public void InitializeRun()
+    public void Start()
     {
-        StartTimer();
+        InitializeRun();
+        MenuSelectionScript.ShouldInitializeRun = false;
     }
 
     private void Update()
@@ -37,8 +40,9 @@ public class TimerScript : MonoBehaviour
     void StartTimer()
     {
         TimeRemaining = timeLimit;
-        isTimerRunning = true;
         startTime = Time.time;
+        isTimerRunning = true;
+        UpdateTimerDisplay();
     }
 
     void UpdateTimer()
@@ -57,6 +61,40 @@ public class TimerScript : MonoBehaviour
                     scoringSystemScript.EndRun();
                 }
             }
+            UpdateTimerDisplay();
         }
+    }
+
+    private void UpdateTimerDisplay()
+    {
+        if (timerText != null)
+        {
+            int minutes = Mathf.FloorToInt(TimeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(TimeRemaining % 60f);
+            timerText.text = $"Time: {minutes}:{seconds:00}";
+        }
+        else
+        {
+            Debug.LogWarning("Timer Text component is not assigned in the inspector.");
+        }
+    }
+
+    public void ResetTimer(float newTime)
+    {
+        timeLimit = newTime;
+        TimeRemaining = newTime;
+        startTime = Time.time;
+        isTimerRunning = true;
+        UpdateTimerDisplay();
+    }
+
+    public void StopTimer()
+    {
+        isTimerRunning = false;
+    }
+
+    public void InitializeRun()
+    {
+        StartTimer();
     }
 }

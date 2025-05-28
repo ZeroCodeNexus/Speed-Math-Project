@@ -1,34 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class OperationDisplayManager : MonoBehaviour
 {
-    
-    public UnityEngine.UI.Text operationText; // Declare at the class level
-    // For TMPro.TMP_Text (recommended):
-    void Start()
+    [SerializeField] private Text operationText; 
+
+    private void Awake()
     {
         if (operationText == null)
         {
-            operationText = GetComponent<UnityEngine.UI.Text>();
-        }
-    }
-    public void ShowOperation(string Operation, int Number1 = 0, int Number2 = 0)
-    {
-        DisplayOperation(Operation, Number1, Number2);
-    }
-    public void DisplayOperation(string Operation, int Number1, int Number2)
-    {
-        if (operationText != null)
-        {
-            operationText.text = $"{Number1} {Operation} {Number2}";
+            Debug.LogWarning("Operation text component is not assigned. Please assign it in the inspector.");
         }
         else
         {
-            Debug.LogWarning("Operation text component is not assigned.");
+            operationText.text = "";
+        }
+    }
+
+    private void Start()
+    {
+        
+    }
+
+    
+    public void ShowOperation(string operation, int number1, int number2)
+    {
+        Debug.Log($"ShowOperation called with: {number1} {operation} {number2}");
+        if (operationText == null)
+        {
+            Debug.LogWarning("Operation text component is not assigned. Please assign it in the inspector.");
+            return;
+        }
+        if (string.IsNullOrEmpty(operation))
+        {
+            operationText.text = "No operation selected.";
+        }
+        else
+        {
+            operationText.text = $"{number1} {operation} {number2}";
+        }
+    }
+
+    public void ShowOperation(string operationString)
+    {
+        if (operationText == null)
+        {
+            Debug.LogWarning("Operation text component is not assigned. Please assign it in the inspector.");
+            return;
+        }
+        operationText.text = operationString;
+    }
+
+ 
+    public void ClearOperation()
+    {
+        if (operationText != null)
+            operationText.text = string.Empty;
+    }
+
+    private void GenerateMathOperation(OperationDisplayManager displayManager)
+    {
+      
+    }
+
+    private void SomeOtherMethod()
+    {
+        OperationDisplayManager displayManager = FindObjectOfType<OperationDisplayManager>();
+        PreselectMathOperationGen mathGen = FindObjectOfType<PreselectMathOperationGen>();
+        if (displayManager != null && mathGen != null)
+        {
+            mathGen.GenerateMathOperation(displayManager);
         }
     }
 }

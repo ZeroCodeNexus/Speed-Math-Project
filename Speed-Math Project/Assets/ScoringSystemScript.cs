@@ -2,23 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; 
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement; 
 
 public class ScoringSystemScript : MonoBehaviour
 {
-    public PreselectMathOperationGen GenerateMathOperation;
 
     private int score = 0;
     private int correctStreak = 0;
+
+    public string CorrectAnswer { get; set; } 
 
 
     private readonly int[] streakThresholds = { 25, 15, 10, 5 };
     private readonly int[] multipliers = { 10, 5, 3, 2 };
 
+    private IEnumerator Start()
+{
+    yield return null;
+    ShowNextOperation();
+    
+}
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            var inputFieldObj = GameObject.Find("InputField (TMP)");
+            if (inputFieldObj != null)
+            {
+                var tmpInputField = inputFieldObj.GetComponent<TMPro.TMP_InputField>();
+                if (tmpInputField != null)
+                {
+                    string userInput = tmpInputField.text;
+                    CheckAnswer(userInput);
+                    tmpInputField.text = "";
+                }
+                else
+                {
+                    Debug.LogWarning("TMP_InputField component not found on 'InputField(TMP)'.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("'InputField(TMP)' GameObject not found for answer submission.");
+            }
+        }
+
+    }
     public void InitializeRun()
     {
         score = 0;
         correctStreak = 0;
+        UpdateScoreboard();
 
+       
+        OperationDisplayManager displayManager = FindObjectOfType<OperationDisplayManager>();
+        PreselectMathOperationGen mathGen = FindObjectOfType<PreselectMathOperationGen>();
+        if (displayManager != null && mathGen != null)
+        {
+            mathGen.GenerateMathOperation(displayManager);
+            CorrectAnswer = mathGen.CorrectAnswer.ToString();
+            
+            Debug.Log("Calling GenerateMathOperation...");
+        }
+        Debug.Log("Run initialized. Score reset to 0. Correct streak reset to 0.");
     }
 
 
@@ -43,19 +92,7 @@ public class ScoringSystemScript : MonoBehaviour
     }
     public void CheckAnswer(string userInput)
     {
-        if (GenerateMathOperation == null)
-        {
-            Debug.LogWarning("GenerateMathOperation reference not set!");
-            return;
-        }
-        if (string.IsNullOrEmpty(userInput))
-        {
-            Debug.LogWarning("User input is empty!");
-            return;
-        }
-
-        string CorrectAnswer = GenerateMathOperation.CorrectAnswer.ToString();
-
+        Debug.Log($"CheckAnswer CALLED with input: {userInput}");
         if (userInput.Trim() == CorrectAnswer)
         {
             correctStreak++;
@@ -63,15 +100,38 @@ public class ScoringSystemScript : MonoBehaviour
             int pointsToAdd = 5 * multiplier;
             score += pointsToAdd;
             Debug.Log($"Correct! +{pointsToAdd} points (Multiplier x{multiplier}). Score: {score}");
+
+            
+            Debug.Log($"[DEBUG] Streak: {correctStreak}, Multiplier: {multiplier}");
+
+            
+            MultiplierDisplay multiplierDisplay = FindObjectOfType<MultiplierDisplay>();
+            if (multiplierDisplay != null)
+            {
+                multiplierDisplay.ShowMultiplier(multiplier);
+            }
         }
         else
         {
             correctStreak = 0;
+            int multiplier = GetCurrentMultiplier();
             score -= 5;
             score = Mathf.Max(score, 0);
             Debug.Log($"Incorrect. -5 points. Score: {score}");
+
+          
+            Debug.Log($"[DEBUG] Streak: {correctStreak}, Multiplier: {multiplier}");
+
+          
+            MultiplierDisplay multiplierDisplay = FindObjectOfType<MultiplierDisplay>();
+            if (multiplierDisplay != null)
+            {
+                multiplierDisplay.ShowMultiplier(multiplier);
+            }
         }
 
+        UpdateScoreboard(); 
+        ShowNextOperation();
     }
     public void EndRun()
     {
@@ -129,13 +189,38 @@ public class ScoringSystemScript : MonoBehaviour
 
         closeButton.onClick.AddListener(() => {
             Destroy(popup);
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         });
     }
 
+    public void ShowNextOperation()
+    {
+        Debug.Log("ShowNextOperation called");
+        OperationDisplayManager displayManager = FindObjectOfType<OperationDisplayManager>();
+        PreselectMathOperationGen mathGen = FindObjectOfType<PreselectMathOperationGen>();
+        if (displayManager != null && mathGen != null)
+        {
+            Debug.Log("Calling GenerateMathOperation...");
+            mathGen.GenerateMathOperation(displayManager);
+        
+            CorrectAnswer = mathGen.CorrectAnswer.ToString();
+            Debug.Log($"CorrectAnswer set to: {CorrectAnswer}");
+        }
+        else
+        {
+            Debug.LogWarning("displayManager or mathGen is null in ShowNextOperation!");
+        }
+    }
+
+    private void UpdateScoreboard()
+    {
+        ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+        if (scoreManager != null)
+            scoreManager.UpdateScore(score); 
+    }
 }
-    
-    
+
+
 
 
 
