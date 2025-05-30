@@ -1,5 +1,6 @@
-# TFGJohnMHill
-Repositorio para Projecto Integrado de CESUR
+# Speed Math Project
+
+Dev Repository of Speed Math Project Development
 
 PROJECTO SPEED-MATH
 
